@@ -1,0 +1,85 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f0f2f5;
+  padding: 20px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 40px;
+  text-align: center;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+.login-branding {
+  margin-bottom: 32px;
+}
+
+.logo-circle {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #1890ff;
+  border-radius: 50%;
+}
+
+.logo-icon {
+  font-size: 40px;
+  line-height: 1;
+}
+
+.login-brand-name {
+  color: #1890ff;
+  margin-bottom: 0;
+  font-size: 28px;
+}
+
+.login-brand-subtext {
+  display: block;
+  font-size: 14px;
+  margin-top: 4px;
+  font-weight: normal;
+}
+
+.login-title {
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.login-subtitle {
+  display: block;
+  margin-bottom: 24px;
+  color: #666;
+}
+
+.login-form {
+  text-align: left;
+}
+
+.login-form .ant-input {
+  border-radius: 6px;
+}
+
+.login-button {
+  border-radius: 6px;
+  height: 42px;
+  font-weight: 500;
+}
+
+.login-footer {
+  display: block;
+  margin-top: 24px;
+  color: #666;
+}
+
+.login-footer a {
+  font-weight: 500;
+}
