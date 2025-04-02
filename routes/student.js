@@ -41,13 +41,14 @@ router.get("/profile/:profileID", auth, async (req, res) => {
  * @description - Fetch all the tests that student class assigned
  */
 
-router.get("/tests/:studentClass", auth, async (req, res) => {
-  const studentClass = req.params.studentClass;
+router.get("/tests/:studentClass/:section", auth, async (req, res) => {
+  const {studentClass, section} = req.params;
 
   try {
     await Test.find(
       {
         className: studentClass,
+        section: section,
       },
       "-assignedTo -submitBy -teacherId -__v"
     ).exec(function (err, obj) {

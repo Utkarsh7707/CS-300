@@ -130,7 +130,7 @@ function Signup(props) {
           {showSelect && (
             <>
               <Form.Item
-                name="section"
+                name="className"
                 rules={[{ required: true, message: "Please select your year!" }]}
               >
                 <Select size="large" placeholder="Select Year">
@@ -142,7 +142,7 @@ function Signup(props) {
               </Form.Item>
 
               <Form.Item
-                name="className"
+                name="section"
                 rules={[{ required: true, message: "Please select your department!" }]}
               >
                 <Select size="large" placeholder="Select Department">

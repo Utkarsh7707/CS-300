@@ -95,7 +95,7 @@ export const fetchAttemptTests = (profileID) => async (dispatch) => {
     });
 };
 
-export const fetchTests = (className) => async (dispatch) => {
+export const fetchTests = (className, section) => async (dispatch) => {
   dispatch(requestTests());
 
   const requestOptions = {
@@ -106,7 +106,7 @@ export const fetchTests = (className) => async (dispatch) => {
     },
   };
 
-  await fetch(`/student/tests/${className}`, requestOptions)
+  await fetch(`/student/tests/${className}/${section}`, requestOptions)
     .then((response) => response.json())
     .then((data) => {
       if (data?.error?.name === "TokenExpiredError") {

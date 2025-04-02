@@ -17,6 +17,10 @@ const TestSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  section: {
+    type: String,
+    required: true,
+  },
   minutes: {
     type: Number,
     required: true,

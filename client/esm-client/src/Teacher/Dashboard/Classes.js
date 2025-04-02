@@ -37,7 +37,7 @@ function Classes(props) {
                   </div>
                   <div className="test__name ">
                     {" "}
-                    Class - {individualClass.className}
+                    Class - {individualClass.className} {individualClass.section}
                   </div>
                   <div className="test__icon">
                     <HiClipboardCopy />

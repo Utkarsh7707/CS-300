@@ -103,6 +103,7 @@ router.post("/create-test", auth, async (req, res) => {
     minutes,
     rules,
     className,
+    section,
     outOfMarks,
     answers,
     questions,
@@ -112,6 +113,7 @@ router.post("/create-test", auth, async (req, res) => {
     let createTest = await Test.findOne({
       testName,
       className,
+      section,
       category,
     });
     if (createTest) {
@@ -127,6 +129,7 @@ router.post("/create-test", auth, async (req, res) => {
       answers,
       minutes,
       className,
+      section,
       rules,
       outOfMarks,
       questions,
@@ -215,12 +218,12 @@ router.put("/update-profile/:profileID", auth, async (req, res) => {
 
 router.put("/assigend-to/:testID", auth, async (req, res) => {
   const testID = req.params.testID;
-  const { className } = req.body;
+  const { className, section } = req.body;
   try {
     await Test.updateOne(
       { _id: testID },
       {
-        $addToSet: { assignedTo: [...className] },
+        $addToSet: { assignedTo: [{ className, section }] },
       },
       function (err, updatedData) {
         if (err) {

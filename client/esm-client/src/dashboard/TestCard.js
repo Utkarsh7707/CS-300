@@ -7,14 +7,14 @@ import { connect } from "react-redux";
 import { Skeleton } from "antd";
 
 function TestCard(props) {
-  let { tests, isLoading, studentClassName, trimLength } = props;
+  let { tests, isLoading, studentClassName, section, trimLength } = props;
   if (tests)
     tests =
       tests.length > trimLength ? tests.slice(-trimLength).reverse() : tests;
 
   useEffect(() => {
-    props.fetchTests(studentClassName);
-  }, []);
+    props.fetchTests(studentClassName, section);
+  }, [studentClassName, section]);
 
   return (
     <>
@@ -74,7 +74,7 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchTests: (classID) => dispatch(fetchTests(classID)),
+    fetchTests: (className, section) => dispatch(fetchTests(className, section)),
   };
 };
 

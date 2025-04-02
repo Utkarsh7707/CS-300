@@ -6,16 +6,17 @@ import "./SelectTest.css";
 import TestList from "./TestList";
 
 function SelectTest(props) {
-  const { tests, studentClassName, profileID } = props;
+  const { tests, studentClassName, section, profileID } = props;
 
   const handleSelectedTest =(testData)=>{
       props.selectedTest(testData);
   }
 
   useEffect(() => {
-    props.fetchTests(studentClassName);
+    props.fetchTests(studentClassName, section);
     props.fetchAttemptTests(profileID);
-  }, []);
+  }, [studentClassName, section, profileID]);
+
 
   return (
     <>
@@ -34,7 +35,7 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchTests: (classID) => dispatch(fetchTests(classID)),
+    fetchTests: (className, section) => dispatch(fetchTests(className, section)),
     fetchAttemptTests: (profileID) => dispatch(fetchAttemptTests(profileID)),
     selectedTest: (testData) =>dispatch(selectedTest(testData)),
   };

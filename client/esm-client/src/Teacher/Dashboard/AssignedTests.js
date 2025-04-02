@@ -37,7 +37,7 @@ function AssignedTests(props) {
                   </div>
                   <div className="test__name">
                     {" "}
-                    {test.testName} - Class {test.className}
+                    {test.testName} - Class {test.className} Section {test.section}
                   </div>
                   <div className="test__icon">
                     <HiClipboardCopy />

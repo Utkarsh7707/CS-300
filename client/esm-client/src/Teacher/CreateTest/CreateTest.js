@@ -213,12 +213,12 @@ class CreateTest extends Component {
 
               <div className="element__wrapper">
                 <Form.Item
-                  name="section"
+                  name="className"
                   rules={[
                     { required: true, message: "Please input your section!" },
                   ]}
                 >
-                  <Select defaultValue="Section">
+                  <Select defaultValue="className">
                     <Option value="1">1st year</Option>
                     <Option value="2">2nd year</Option>
                     <Option value="3">3rd year</Option>
@@ -227,10 +227,10 @@ class CreateTest extends Component {
                 </Form.Item>
 
                 <Form.Item
-                  name="className"
+                  name="section"
                   rules={[{ required: true, message: "Please select a class" }]}
                 >
-                  <Select defaultValue="Class">
+                  <Select defaultValue="section">
                     <Option value="CSE">CSE</Option>
                     <Option value="ECE">ECE</Option>
                     {/* <Option value="XI">XI</Option>

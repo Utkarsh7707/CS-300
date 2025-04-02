@@ -6,7 +6,7 @@ import ResultCard from "./ResultCard";
 import "./Dashboard.css";
 
 function Dashboard(props) {
-  const { studentClassName, profileID, userInfo } = props;
+  const { studentClassName, section, profileID, userInfo } = props;
   const trimLength = 8;
 
   // console.log(userInfo);
@@ -18,6 +18,7 @@ function Dashboard(props) {
           <Col className="gutter-row" xs={24} sm={24} md={9} xl={9}>
             <TestCard
               studentClassName={studentClassName}
+              section={section}
               trimLength={trimLength}
             />
           </Col>
@@ -33,6 +34,7 @@ function Dashboard(props) {
 const mapStateToProps = (state) => {
   return {
     studentClassName: state.auth.user ? state.auth.user.className : null,
+    section: state.auth.user ? state.auth.user.section : null,
     profileID: state.auth.user ? state.auth.user.profileID : null,
   };
 };
