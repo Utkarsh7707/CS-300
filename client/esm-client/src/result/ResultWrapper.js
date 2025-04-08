@@ -1,27 +1,32 @@
 import React from "react";
-import { Row, Col } from "antd";
+import { Row, Col, Card, Typography } from "antd";
 import { connect } from "react-redux";
 import SelectTest from "./SelectTest";
+const { Title } = Typography;
 
-function ResultWrapper(props) {
-  const { profileID } = props;
+function ResultWrapper({ profileID }) {
   return (
-    <>
-      <div className="container dashboard">
-        <Row gutter={[48, 10]} justify="center">
-          <Col className="gutter-row" xs={24} sm={24} md={14} xl={14}>
+    <div className="result-wrapper-container">
+      <Row justify="center">
+        <Col xs={24} sm={22} md={18} lg={16} xl={14}>
+          <Card
+            bordered={false}
+            className="result-wrapper-card"
+            bodyStyle={{ padding: "2rem" }}
+          >
+            <Title level={3} className="result-wrapper-title">
+              Select a Test
+            </Title>
             <SelectTest profileID={profileID} />
-          </Col>
-        </Row>
-      </div>
-    </>
+          </Card>
+        </Col>
+      </Row>
+    </div>
   );
 }
 
-const mapStateToProps = (state) => {
-  return {
-    profileID: state.auth.user ? state.auth.profileID : null,
-  };
-};
+const mapStateToProps = (state) => ({
+  profileID: state.auth.user ? state.auth.profileID : null,
+});
 
-export default connect(mapStateToProps, null)(ResultWrapper);
+export default connect(mapStateToProps)(ResultWrapper);

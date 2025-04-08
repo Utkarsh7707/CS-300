@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { Row, Col, Form, Input, Avatar, Popover, Typography } from "antd";
+import { Row, Col, Form, Input, Avatar, Popover, Typography, Card } from "antd";
 import { connect } from "react-redux";
 import "./Profile.css";
 import { Roles } from "../Roles/roles";
+import { CheckCircleFilled, CloseCircleFilled } from '@ant-design/icons';
 
 class Profile extends Component {
   constructor(props) {
@@ -16,7 +17,7 @@ class Profile extends Component {
       section: undefined,
       isVerified: undefined,
       className: undefined,
-      avatarColor: "#1890ff" // Default color
+      avatarColor: "#1890ff"
     };
   }
 
@@ -27,7 +28,6 @@ class Profile extends Component {
   }
 
   generateAvatarColor = () => {
-    // Simple hash function to generate consistent color from user's name
     const name = `${this.props.user.firstName}${this.props.user.lastName}`;
     let hash = 0;
     for (let i = 0; i < name.length; i++) {
@@ -56,10 +56,15 @@ class Profile extends Component {
     const { firstName, lastName, email, phone, role, section, className, isVerified, avatarColor } = this.state;
 
     const verifiedContent = (
-      <div className="verified-popover">Verified!</div>
+      <div className="verified-popover">
+        <CheckCircleFilled style={{ color: '#52c41a' }} /> Verified
+      </div>
     );
+    
     const notVerifiedContent = (
-      <div className="not-verified-popover">Not Verified!</div>
+      <div className="not-verified-popover">
+        <CloseCircleFilled style={{ color: '#ff4d4f' }} /> Not Verified
+      </div>
     );
 
     const userInitials = firstName && lastName 
@@ -68,104 +73,122 @@ class Profile extends Component {
 
     return (
       <div className="profile-container">
-        <Row justify="center" align="middle">
-          <Col xs={24} sm={22} md={18} lg={12} xl={10} className="profile-card">
-            <div className="profile-header">
-              <div className="avatar-wrapper">
-                <Avatar
-                  size={120}
-                  style={{ 
-                    backgroundColor: avatarColor,
-                    fontSize: "48px",
-                    fontWeight: "bold"
-                  }}
-                  className="avatar-initials"
-                >
-                  {userInitials}
-                </Avatar>
-                <Popover content={isVerified ? verifiedContent : notVerifiedContent}>
-                  <img
-                    src={isVerified ? "/verified.png" : "/notVerified.png"}
-                    alt="verification"
-                    className="verification-badge"
-                  />
-                </Popover>
-              </div>
-              <Text className="profile-title">Your Profile</Text>
+        <Card className="profile-card">
+          <div className="profile-header">
+            <div className="avatar-wrapper">
+              <Avatar
+                size={100}
+                style={{ 
+                  backgroundColor: avatarColor,
+                  fontSize: "36px",
+                  fontWeight: "bold",
+                }}
+                className="avatar-initials"
+              >
+                {userInitials}
+              </Avatar>
+              <Popover 
+                content={isVerified ? verifiedContent : notVerifiedContent}
+                placement="right"
+              >
+                <div className="verification-badge">
+                  {isVerified ? (
+                    <CheckCircleFilled style={{ color: '#52c41a', fontSize: '20px' }} />
+                  ) : (
+                    <CloseCircleFilled style={{ color: '#ff4d4f', fontSize: '20px' }} />
+                  )}
+                </div>
+              </Popover>
             </div>
+            <Text className="profile-title">User Profile</Text>
+            <Text type="secondary" className="profile-subtitle">View and manage your profile information</Text>
+          </div>
 
-            <Form className="profile-form">
-              <div className="name-fields">
-                <Form.Item>
+          <Form className="profile-form" layout="vertical">
+            <Row gutter={24}>
+              <Col xs={24} sm={12}>
+                <Form.Item label="First Name">
                   <Input
                     readOnly
                     value={firstName}
                     className="profile-input"
-                    addonBefore="First Name"
+                    bordered={false}
                   />
                 </Form.Item>
-                <Form.Item>
+              </Col>
+              <Col xs={24} sm={12}>
+                <Form.Item label="Last Name">
                   <Input
                     readOnly
                     value={lastName}
                     className="profile-input"
-                    addonBefore="Last Name"
+                    bordered={false}
                   />
                 </Form.Item>
-              </div>
+              </Col>
+            </Row>
 
-              <Form.Item>
-                <Input
-                  readOnly
-                  value={email}
-                  className="profile-input"
-                  addonBefore="Email"
-                />
-              </Form.Item>
+            <Row gutter={24}>
+              <Col xs={24} sm={12}>
+                <Form.Item label="Email">
+                  <Input
+                    readOnly
+                    value={email}
+                    className="profile-input"
+                    bordered={false}
+                  />
+                </Form.Item>
+              </Col>
+              <Col xs={24} sm={12}>
+                <Form.Item label="Phone">
+                  <Input
+                    readOnly
+                    value={phone}
+                    className="profile-input"
+                    bordered={false}
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
 
-              <Form.Item>
-                <Input
-                  readOnly
-                  value={phone}
-                  className="profile-input"
-                  addonBefore="Phone"
-                />
-              </Form.Item>
-
-              <div className="role-fields">
-                <Form.Item>
+            <Row gutter={24}>
+              <Col xs={24} sm={12}>
+                <Form.Item label="Role">
                   <Input
                     readOnly
                     value={role}
                     className="profile-input"
-                    addonBefore="Role"
+                    bordered={false}
                   />
                 </Form.Item>
-
-                {role === Roles.student && (
-                  <>
-                    <Form.Item>
+              </Col>
+              {role === Roles.student && (
+                <>
+                  <Col xs={24} sm={6}>
+                    <Form.Item label="Year">
                       <Input
                         readOnly
                         value={className}
                         className="profile-input"
-                        addonBefore="Class"
+                        bordered={false}
                       />
                     </Form.Item>
-                    <Form.Item>
+                  </Col>
+                  <Col xs={24} sm={6}>
+                    <Form.Item label="Department">
                       <Input
                         readOnly
                         value={section}
                         className="profile-input"
-                        addonBefore="Section"
+                        bordered={false}
                       />
                     </Form.Item>
-                  </>
-                )}
-              </div>
-            </Form>
-          </Col>
-        </Row>
+                  </Col>
+                </>
+              )}
+            </Row>
+          </Form>
+        </Card>
       </div>
     );
   }

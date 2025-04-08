@@ -199,6 +199,7 @@ export const fetchTeacherTests = (profileID) => async (dispatch) => {
   await fetch(`/teacher/tests/${profileID}`, requestOptions)
     .then((response) => response.json())
     .then((data) => {
+      console.log("API Response:", data.obj);
       if (data) {
         if (data?.error?.name === "TokenExpiredError") {
           dispatch(logoutUser());

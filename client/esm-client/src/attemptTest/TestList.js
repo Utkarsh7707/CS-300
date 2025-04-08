@@ -1,150 +1,106 @@
 import React, { useState, useEffect } from "react";
-import { Button } from "antd";
-import SearchBox from "./SearchBox";
+import { Button, Card, Typography, Skeleton, Input } from "antd";
 import { useHistory } from "react-router-dom";
-import { Skeleton } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
+import "./TestList.css";
+
+const { Text, Title } = Typography;
 
 export default function TestList(props) {
   const history = useHistory();
   const [tests, setTests] = useState([]);
-  const [searchTests, setSearchTests] = useState([]);
-  const [searching, setSearching] = useState("");
+  const [filteredTests, setFilteredTests] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedTest, setSelectedTest] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setTests(props.tests.reverse());
-  }, [props]);
+    if (props.tests) {
+      setTests([...props.tests].reverse());
+      setLoading(false);
+    }
+  }, [props.tests]);
 
-  const handleListData = (searchTerm) => {
-    if (searchTerm === "") setSearching(searchTerm);
-    else {
-      setSearching(true);
-      setSearchTests(
-        tests.filter((test) => test.testName.toLowerCase().includes(searchTerm))
-      );
+  useEffect(() => {
+    if (searchTerm) {
+      setFilteredTests(
+        tests.filter(test => 
+          test.testName.toLowerCase().includes(searchTerm.toLowerCase())
+      ));
+    }
+  }, [searchTerm, tests]);
+
+  const handleContinue = () => {
+    if (selectedTest) {
+      props.handleSelectedTest(selectedTest);
+      history.push("/test-instructions");
     }
   };
 
-  let selectRef,
-    selectedData = {};
-
-  const handleButtonClick = () => {
-    props.handleSelectedTest(selectedData);
-    history.push("/test-instructions");
-  };
-
-  const handleSelectTest = (e, index) => {
-    if (selectRef) {
-      selectRef.classList.remove("selected__test");
-    }
-    selectRef = e.currentTarget;
-    e.currentTarget.classList.add("selected__test");
-    selectedData = tests[index];
-
-    //console.log();
-  };
+  const displayTests = searchTerm ? filteredTests : tests;
 
   return (
-    <>
-      <div className="select__test__wrapper">
-        <p className="test__wrapper__heading">Available Test</p>
-        <div className="select__test__search__box">
-          <p className="search__box__heading">Search Test</p>
-          {<SearchBox handleListData={handleListData} />}
-          <div className="test__wrapper__body">
-            <p className="test__wrapper__heading select__heading">
-              Select Test
-            </p>
-            <div className="select__test__body">
-              {tests && tests.length > 0 ? (
-                searching !== "" ? (
-                  searchTests.map((test, index) => (
-                    <div
-                      key={index}
-                      className={`test__wrapper`}
-                      onClick={(e) => {
-                        handleSelectTest(e, index);
-                      }}
-                    >
-                      <p className="select__test" key={index}>
-                        {test.testName}
-                      </p>
-                      <div className="test__time">
-                        <p className="time start">Start: Oct 26 2020 12:14PM</p>
-                        <p className="time end">End: Oct 29 2020 11:50PM</p>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  tests.map((test, index) => (
-                    <div
-                      key={index}
-                      className={`test__wrapper`}
-                      onClick={(e) => {
-                        handleSelectTest(e, index);
-                      }}
-                    >
-                      <p className="select__test" key={index}>
-                        {test.testName}
-                      </p>
-                      <div className="test__time">
-                        <p className="time start">Start: Oct 26 2020 12:14PM</p>
-                        <p className="time end">End: Oct 29 2020 11:50PM</p>
-                      </div>
-                    </div>
-                  ))
-                )
-              ) : (
-                <div className="select__skeleton">
-                  <div className="select__single-skeleton">
-                    <Skeleton.Avatar
-                      className="select__avatar-skelton"
-                      active={true}
-                      size="default"
-                      shape="square"
-                    />
-                    <Skeleton.Input
-                      className="select__input-skelton"
-                      active={true}
-                      size="default"
-                    />
-                  </div>
-                  <div className="select__single-skeleton">
-                    <Skeleton.Avatar
-                      className="select__avatar-skelton"
-                      active={true}
-                      size="default"
-                      shape="square"
-                    />
-                    <Skeleton.Input
-                      className="select__input-skelton"
-                      active={true}
-                      size="default"
-                    />
-                  </div>
-                  <div className="select__single-skeleton">
-                    <Skeleton.Avatar
-                      className="select__avatar-skelton"
-                      active={true}
-                      size="default"
-                      shape="square"
-                    />
-                    <Skeleton.Input
-                      className="select__input-skelton"
-                      active={true}
-                      size="default"
-                    />
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-        <div className="select__button">
-          <Button type="primary" onClick={handleButtonClick}>
-            Continue
-          </Button>
-        </div>
+    <Card className="test-selection-card">
+      <Title level={4} className="test-selection-title" >
+        Available Tests
+      </Title>
+      
+      <div className="search-container">
+        <Text strong className="search-label">
+          Search Tests
+        </Text>
+        <Input
+          placeholder="Search by test name..."
+          prefix={<SearchOutlined />}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          allowClear
+          className="search-input"
+        />
       </div>
-    </>
+
+      <div className="test-list-container">
+        <Text strong className="selection-label">
+          Select Test
+        </Text>
+        
+        {loading ? (
+          <div className="skeleton-container">
+            {[1, 2, 3].map((item) => (
+              <div key={item} className="test-skeleton-item">
+                <Skeleton.Avatar active size="default" shape="square" />
+                <Skeleton.Input active size="default" />
+              </div>
+            ))}
+          </div>
+        ) : displayTests && displayTests.length > 0 ? (
+          <div className="test-items-wrapper">
+            {displayTests.map((test, index) => (
+              <div
+                key={index}
+                className={`test-item ${selectedTest?.testName === test.testName ? 'selected' : ''}`}
+                onClick={() => setSelectedTest(test)}
+              >
+                <Text className="test-name">{test.testName}</Text>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="empty-state">
+            <Text type="secondary">No tests available</Text>
+          </div>
+        )}
+      </div>
+
+      <div className="actions-container">
+        <Button 
+          type="primary" 
+          onClick={handleContinue}
+          disabled={!selectedTest}
+          className="continue-button"
+        >
+          Continue
+        </Button>
+      </div>
+    </Card>
   );
 }

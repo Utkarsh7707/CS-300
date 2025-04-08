@@ -1,88 +1,73 @@
 import React, { useEffect } from "react";
-import "./TestCard.css";
-import { HiOutlineClipboardList, HiClipboardCopy } from "react-icons/hi";
+import { Card, List, Typography, Skeleton } from "antd";
+import { HiOutlineClipboardList, HiClipboardCheck } from "react-icons/hi";
 import { fetchAttemptTests } from "../actions/testActions";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { Skeleton } from "antd";
+import "./ResultCard.css";
+
+const { Text, Title } = Typography;
 
 function ResultCard(props) {
-  let { tests, isLoading, profileID, trimLength } = props;
-  if (tests)
-    tests =
-      tests.length > trimLength ? tests.slice(-trimLength).reverse() : tests;
+  const { tests, isLoading, profileID, trimLength } = props;
 
   useEffect(() => {
-    props.fetchTests(profileID);
-    console.log("fired");
-  }, []);
+    if (profileID) {
+      props.fetchTests(profileID);
+    }
+  }, [profileID]);
+
+  const processedTests = tests
+    ? (tests.length > trimLength
+        ? tests.slice(-trimLength).reverse()
+        : [...tests].reverse())
+    : [];
 
   return (
-    <>
-      <div className="left__header">
-        <p className="left__header__text">
-          {<HiOutlineClipboardList />}Recently Attempted Tests
-        </p>
+    <div className="result-card">
+      <div className="card-header">
+        <HiOutlineClipboardList className="header-icon" />
+        <Title level={5} className="header-title">Recent Results</Title>
       </div>
-      <div className="left__body">
-        {!isLoading && tests ? (
-          <ul className="left__body__list__ul">
-            {tests.map((test, index) => (
-              <Link to="/result" key={index}>
-                <li className="left__body__test">
-                  <div className="test__index">
-                    <p
-                      className="index__box "
-                      style={{ backgroundColor: "#1e90ff" }}
-                    >
-                      {index + 1}
-                    </p>
+
+      <div className="card-content">
+        {isLoading ? (
+          <Skeleton active paragraph={{ rows: 4 }} />
+        ) : processedTests.length > 0 ? (
+          <List
+            dataSource={processedTests}
+            renderItem={(test, index) => (
+              <List.Item className="result-item">
+                <Link to="/result" className="result-link">
+                  <div className="result-content">
+                    <div className="result-index">
+                      <Text strong>{index + 1}</Text>
+                    </div>
+                    <Text ellipsis className="result-name">{test.testName}</Text>
+                    <HiClipboardCheck className="result-icon" />
                   </div>
-                  <div className="test__name"> {test.testName}</div>
-                  <div className="test__icon">
-                    <HiClipboardCopy />
-                  </div>
-                </li>
-              </Link>
-            ))}
-          </ul>
+                </Link>
+              </List.Item>
+            )}
+          />
         ) : (
-          <div className="skeleton">
-            {Array(trimLength)
-              .fill()
-              .map((item, i) => (
-                <div className="single-skeleton" key={i}>
-                  <Skeleton.Avatar
-                    className="avatar-skelton"
-                    active={true}
-                    size="default"
-                    shape="square"
-                  />
-                  <Skeleton.Input
-                    className="input-skelton"
-                    active={true}
-                    size="default"
-                  />
-                </div>
-              ))}
+          <div className="empty-state">
+            <Text type="secondary">No recent test results</Text>
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 }
 
-const mapStateToProps = (state) => {
-  return {
-    isLoading: state.tests.isLoadingAttemptedTest,
-    tests: state.tests.attemptedTest,
-    profileID: state.auth.profileID,
-  };
-};
-const mapDispatchToProps = (dispatch) => {
-  return {
-    fetchTests: (profileID) => dispatch(fetchAttemptTests(profileID)),
-  };
-};
+const mapStateToProps = (state) => ({
+  isLoading: state.tests.isLoadingAttemptedTest,
+  tests: state.tests.attemptedTest,
+  profileID: state.auth.profileID, // ✅ RESTORED
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  fetchTests: (profileID) => dispatch(fetchAttemptTests(profileID)),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(ResultCard);

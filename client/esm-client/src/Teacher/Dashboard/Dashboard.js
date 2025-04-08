@@ -6,21 +6,28 @@ import "./Dashboard.css";
 
 function Dashboard(props) {
   const trimLength = 8;
-  // console.log(userInfo);
 
   return (
-    <>
-      <div className="container dashboard">
-        <Row gutter={[48, 10]} justify="center">
-          <Col className="gutter-row" xs={24} sm={24} md={9} xl={9}>
-            <AssignedTests trimLength={trimLength} />
+    <div className="dashboard-container">
+      
+      
+      <div className="dashboard-content">
+        <Row gutter={[32, 32]} justify="center">
+          <Col xs={24} sm={24} md={12} lg={10} xl={10}>
+            <div className="dashboard-card">
+              <h2 className="card-title">Assigned Tests</h2>
+              <AssignedTests trimLength={trimLength} />
+            </div>
           </Col>
-          <Col className="gutter-row" xs={24} sm={24} md={9} xl={9}>
-            <Classes trimLength={trimLength} />
+          <Col xs={24} sm={24} md={12} lg={10} xl={10}>
+            <div className="dashboard-card">
+              <h2 className="card-title">Classes</h2>
+              <Classes trimLength={trimLength} />
+            </div>
           </Col>
         </Row>
       </div>
-    </>
+    </div>
   );
 }
 

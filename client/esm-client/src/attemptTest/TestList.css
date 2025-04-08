@@ -1,0 +1,157 @@
+.test-selection-card {
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e8e8e8;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.test-selection-title {
+  color: #2c3e50;
+  margin-bottom: 24px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.search-container {
+  margin-bottom: 20px;
+}
+
+.search-label {
+  display: block;
+  margin-bottom: 8px;
+  color: #555;
+  font-size: 14px;
+}
+
+.search-input {
+  border-radius: 6px;
+  padding: 10px 16px;
+}
+
+.test-list-container {
+  margin: 24px 0;
+}
+
+.selection-label {
+  display: block;
+  margin-bottom: 12px;
+  color: #555;
+  font-size: 14px;
+}
+
+.test-items-wrapper {
+  border: 1px solid #f0f0f0;
+  border-radius: 6px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.test-item {
+  padding: 14px 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.test-item:last-child {
+  border-bottom: none;
+}
+
+.test-item:hover {
+  background-color: #f9f9f9;
+}
+
+.test-item.selected {
+  background-color: #e6f7ff;
+  border-left: 3px solid #1890ff;
+}
+
+.test-name {
+  font-size: 14px;
+  padding: 13px;
+  color: #333;
+}
+
+.test-item.selected .test-name {
+  color: #1890ff;
+  font-weight: 500;
+}
+
+.skeleton-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid #f0f0f0;
+  border-radius: 6px;
+}
+
+.test-skeleton-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+}
+
+.empty-state {
+  padding: 24px;
+  text-align: center;
+  border: 1px dashed #e8e8e8;
+  border-radius: 6px;
+  background-color: #fafafa;
+}
+
+.actions-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+.continue-button {
+  border-radius: 6px;
+  padding: 0 32px;
+  height: 40px;
+  font-weight: 500;
+}
+
+.continue-button:disabled {
+  background-color: #f5f5f5;
+  color: rgba(0, 0, 0, 0.25);
+  border-color: #d9d9d9;
+}
+
+/* Scrollbar styling */
+.test-items-wrapper::-webkit-scrollbar {
+  width: 6px;
+}
+
+.test-items-wrapper::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.test-items-wrapper::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 10px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .test-selection-card {
+    padding: 16px;
+  }
+  
+  .test-selection-title {
+    font-size: 18px;
+  }
+  
+  .test-item {
+    padding: 12px 16px;
+  }
+  
+  .continue-button {
+    width: 100%;
+  }
+}

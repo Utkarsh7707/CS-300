@@ -1,89 +1,186 @@
-.instructions__wrapper {
-    border: 1px solid var(--border);
-    border-radius: 5px;
-    padding: 2em;
-    background-color: var(--secondary);
-    box-shadow: 0 0 5px var(--box-shadow);
-}
-
-.ems__log__wrapper {
-    display: grid;
-    place-items: center;
-    margin-bottom: 15px;
-}
-
-.ems__logo {
-    max-width: 300px;
-}
-
-.btn-instructions {
-    color: var(--secondary);
+/* Make the entire component take full screen */
+.test-instruction-container {
+    width: 100vw;
+    height: 100vh;
+    padding: 24px 32px;
+    margin: 0;
+    background-color: #f9f9f9;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Remove card look */
+  .instruction-card {
+    border-radius: 0;
+    box-shadow: none;
     border: none;
-    border-radius: 5px;
-}
-
-.btn-instructions:hover {
-    color: var(--secondary);
-}
-
-.btn-instructions:focus {
-    color: var(--secondary);
-}
-
-.navigation__buttons__Feature {
+    background-color: white;
+    width: 100%;
+    height: 100%;
+    padding: 24px;
+  }
+  
+  /* Titles and headings */
+  .main-title {
+    text-align: center;
+    margin-bottom: 24px;
+    color: #2c3e50;
+  }
+  
+  /* Info and navigation blocks */
+  .info-card,
+  .navigation-card {
+    border-radius: 8px;
+    height: 100%;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    background-color: white;
+    padding: 24px;
+  }
+  
+  /* Section headings */
+  .section-title {
+    color: #2c3e50;
+    margin-bottom: 16px;
+  }
+  
+  /* Grid layout for test info */
+  .test-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  
+  .info-item {
     display: flex;
     justify-content: space-between;
-    margin: 25px 0;
-}
-
-.test__subheadings {
+    padding: 8px 0;
+    border-bottom: 1px dashed #f0f0f0;
+  }
+  
+  .info-item:last-child {
+    border-bottom: none;
+  }
+  
+  /* Instructions */
+  .rules-list {
     display: flex;
-    padding: 5px;
-}
-
-.test__fields {
-    flex: 0.5;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .rule-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .rule-icon {
+    color: #1890ff;
+    margin-top: 4px;
+    flex-shrink: 0;
+  }
+  
+  .rule-text {
+    flex: 1;
+  }
+  
+  /* Logo */
+  .logo-container {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  
+  .ems-logo {
+    width: 250px;
+    height: auto;
+  }
+  
+  /* Navigation button guide */
+  .button-guide {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .guide-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  
+  .guide-button {
+    min-width: 100px;
+  }
+  
+  .guide-text {
+    flex: 1;
+  }
+  
+  .start-button-container {
+    margin-top: 32px;
+    text-align: center;
+  }
+  
+  .start-button {
+    width: 100%;
+    height: 50px;
+    font-size: 16px;
     font-weight: 500;
-}
-
-.rule {
-    color: var(--error);
-}
-
-.rule__description {
-    margin-left: 5px;
-}
-
-.test__fields__Value {
-    flex: 0.5;
-}
-
-.test__instructions__subheading {
-    margin-top: 15px;
-}
-
-@media(max-width:576px) {
-    .navigation__buttons__Feature {
-        display: flex;
-        flex-direction: column;
-        margin: 25px 0;
+  }
+  
+  .attempted-notice {
+    display: block;
+    margin-top: 8px;
+    color: #ff4d4f;
+  }
+  
+  /* Button colors */
+  .next-btn,
+  .prev-btn {
+    background-color: #52c41a;
+    border-color: #52c41a;
+  }
+  
+  .flag-btn {
+    background-color: #faad14;
+    border-color: #faad14;
+  }
+  
+  .end-btn {
+    background-color: #ff4d4f;
+    border-color: #ff4d4f;
+  }
+  
+  /* Responsive tweaks */
+  @media (max-width: 768px) {
+    .test-info-grid {
+      grid-template-columns: 1fr;
     }
-    .ems__logo {
-        max-width: 250px;
+  
+    .guide-item {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
     }
-}
-
-@media(min-width:768px) {
-    .navigation__instructions {
-        max-width: 90%;
+  
+    .guide-button {
+      width: 100%;
     }
-    .test__info {
-        max-width: 80%;
+  
+    .start-button {
+      width: 100%;
     }
-    .btn-instructions {
-        flex: 0.1;
+  }
+  
+  @media (max-width: 576px) {
+    .test-instruction-container {
+      padding: 16px;
     }
-    .button__description {
-        flex: 0.7;
+  
+    .instruction-card {
+      padding: 16px;
     }
-}
+  }
+  

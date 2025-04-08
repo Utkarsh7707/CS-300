@@ -1,3 +1,5 @@
+/* Add these styles to your HandleLiveTest.css */
+
 .question_board {
     display: flex;
     position: relative;
@@ -170,10 +172,7 @@
     color: white;
 }
 
-.add-flag {
-    background-color: var(--warning) !important;
-    color: white;
-}
+/* .add-flag is no longer needed */
 
 /* .descripiton__wrapper{
     position: relative;

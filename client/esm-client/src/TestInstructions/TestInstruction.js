@@ -1,16 +1,18 @@
-import React, {useState} from "react";
-import { Row, Modal, Col, Button } from "antd";
+import React from "react";
+import { useState } from "react";
+import { Row, Col, Button, Card, Modal, Typography, Divider } from "antd";
 import { connect } from "react-redux";
-import "./TestInstruction.css";
 import { FaArrowCircleRight } from "react-icons/fa";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import { useHistory } from "react-router-dom";
+import "./TestInstruction.css";
+
+const { Title, Text } = Typography;
+const { confirm } = Modal;
 
 function TestInstruction(props) {
-  //console.log(props.selectedTest);
   const history = useHistory();
-  const { confirm } = Modal;
-  const { tests} = props;
+  const { tests, selectedTest } = props;
   const {
     outOfMarks,
     questions,
@@ -20,181 +22,151 @@ function TestInstruction(props) {
     testName,
     rules,
     _id: testID,
-  } = props.selectedTest;
+  } = selectedTest;
 
-  let testRules, attempted=false;
+  const [attempted, setAttempted] = useState(false);
 
-  if (rules) {
-    testRules = rules;
-  }
-  
+  // Check if test was already attempted
+  React.useEffect(() => {
+    const isAttempted = tests.some(test => test.testName === testName);
+    setAttempted(isAttempted);
+  }, [tests, testName]);
 
-  tests.map((test, index)=>{
-    if(test.testName === testName){
-      attempted=true
-    }
-  })
-
-  const handleButtonClick = () => {
+  const handleStartTest = () => {
     confirm({
-      title: "Do you give test now?",
+      title: "Are you ready to begin the test?",
       icon: <ExclamationCircleOutlined />,
-      content: "Once you click OK , timer will start!",
+      content: "The timer will start as soon as you click OK!",
+      okText: "Start Test",
+      cancelText: "Cancel",
       onOk() {
-        // console.log(props.selectedTest);
-        console.log("OK");
         history.push("/start-test");
-      },
-      onCancel() {
-        console.log("Cancel");
       },
     });
   };
 
   return (
-    <>
-      <div className="container dashboard">
-        <Row gutter={[48, 10]} justify="center">
-          <Col className="gutter-row" xs={24} sm={24} md={22} xl={22}>
-            <div className="instructions__wrapper">
-              <Row justify="center">
-                <Col className="gutter-row" xs={24} sm={24} md={12} xl={12}>
-                  <div className="instructions__wrapper__left">
-                    <p className="instructions__heading">Test Instructions</p>
-                    <div className="test__info">
-                      <div className="test__subheadings">
-                        <div className="test__fields">Test Name:</div>
-                        <div className="test__fields__Value">{testName}</div>
-                      </div>
+    <div className="test-instruction-container">
+      <Card className="instruction-card">
+        <Title level={2} className="main-title">Test Instructions</Title>
+        
+        <Row gutter={[32, 32]}>
+          {/* Left Column - Test Info */}
+          <Col xs={24} md={12}>
+            <Card className="info-card">
+              <Title level={4} className="section-title">Test Details</Title>
+              
+              <div className="test-info-grid">
+                <div className="info-item">
+                  <Text strong>Test Name:</Text>
+                  <Text>{testName}</Text>
+                </div>
+                <div className="info-item">
+                  <Text strong>Total Questions:</Text>
+                  <Text>{questions?.length}</Text>
+                </div>
+                <div className="info-item">
+                  <Text strong>Allocated Time:</Text>
+                  <Text>{minutes} Minutes</Text>
+                </div>
+                <div className="info-item">
+                  <Text strong>Category:</Text>
+                  <Text>{category}</Text>
+                </div>
+                <div className="info-item">
+                  <Text strong>Total Marks:</Text>
+                  <Text>{outOfMarks}</Text>
+                </div>
+              </div>
 
-                      <div className="test__subheadings">
-                        <div className="test__fields">Total Questions:</div>
-                        <div className="test__fields__Value">
-                          {questions?.length}
-                        </div>
-                      </div>
+              <Divider />
 
-                      <div className="test__subheadings">
-                        <div className="test__fields">Allocated Time:</div>
-                        <div className="test__fields__Value">
-                          {minutes} Minutes
-                        </div>
-                      </div>
-
-                      <div className="test__subheadings">
-                        <div className="test__fields">Category:</div>
-                        <div className="test__fields__Value">{category}</div>
-                      </div>
-
-                      <div className="test__subheadings">
-                        <div className="test__fields">Total Marks:</div>
-                        <div className="test__fields__Value">{outOfMarks}</div>
-                      </div>
-                    </div>
-                    <div className="test__instructions">
-                      <p className="test__instructions__subheading">
-                        Instructions
-                      </p>
-                      <div className="instructions">
-                        {testRules?.map((rule, index) => (
-                          <p className="rule" key={index}>
-                            <FaArrowCircleRight />{" "}
-                            <span className="rule__description">
-                              {rule.value}
-                            </span>
-                          </p>
-                        ))}
-                      </div>
-                    </div>
+              <Title level={4} className="section-title">Test Rules</Title>
+              <div className="rules-list">
+                {rules?.map((rule, index) => (
+                  <div key={index} className="rule-item">
+                    <FaArrowCircleRight className="rule-icon" />
+                    <Text className="rule-text">{rule.value}</Text>
                   </div>
-                </Col>
-                <Col className="gutter-row" xs={24} sm={24} md={12} xl={12}>
-                  <div className="instructions__wrapper__right">
-                    <div className="ems__log__wrapper">
-                      <img
-                        src="/ems-logo.png"
-                        className="ems__logo"
-                        alt="ems-logo"
-                      />
-                    </div>
-                    <p className="navigation__instructions__heading">
-                      Navigation Buttons
-                    </p>
-                    <div className="navigation__instructions">
-                      <div className="navigation__buttons__Feature">
-                        <Button
-                          style={{ backgroundColor: "#449d44" }}
-                          className="btn-instructions"
-                        >
-                          Next
-                        </Button>
-                        <p className="button__description">
-                          Next: By clicking Next button next question will
-                          appear to user
-                        </p>
-                      </div>
-                      <div className="navigation__buttons__Feature">
-                        <Button
-                          style={{ backgroundColor: "#449d44" }}
-                          className="btn-instructions"
-                        >
-                          Previous
-                        </Button>
-                        <p className="button__description">
-                          Next: By clicking Next button next question will
-                          appear to user
-                        </p>
-                      </div>
-                      <div className="navigation__buttons__Feature">
-                        <Button
-                          style={{ backgroundColor: "#ec971f" }}
-                          className="btn-instructions"
-                        >
-                          Flag
-                        </Button>
-                        <p className="button__description">
-                          Flag: By clicking Next button next question will
-                          appear to user
-                        </p>
-                      </div>
-                      <div className="navigation__buttons__Feature">
-                        <Button
-                          style={{ backgroundColor: "#ff4d4f" }}
-                          className="btn-instructions"
-                        >
-                          End Test
-                        </Button>
-                        <p className="button__description">
-                          End Test: By clicking Next button next question will
-                          appear to user
-                        </p>
-                      </div>
-                    </div>
-                    <div className="select__button">
-                      <Button
-                        type="primary"
-                        onClick={handleButtonClick}
-                        disabled={attempted}
-                      >
-                        Continue
-                      </Button>
-                    </div>
-                  </div>
-                </Col>
-              </Row>
-            </div>
+                ))}
+              </div>
+            </Card>
+          </Col>
+
+          {/* Right Column - Navigation Guide */}
+          <Col xs={24} md={12}>
+            <Card className="navigation-card">
+              <div className="logo-container">
+                <img src="/ems-logo.png" alt="EMS Logo" className="ems-logo" />
+              </div>
+
+              <Title level={4} className="section-title">Navigation Guide</Title>
+              
+              <div className="button-guide">
+                <div className="guide-item">
+                  <Button type="primary" className="guide-button next-btn">
+                    Next
+                  </Button>
+                  <Text className="guide-text">
+                    Moves to the next question in the test
+                  </Text>
+                </div>
+                
+                <div className="guide-item">
+                  <Button type="primary" className="guide-button prev-btn">
+                    Previous
+                  </Button>
+                  <Text className="guide-text">
+                    Returns to the previous question
+                  </Text>
+                </div>
+                
+                <div className="guide-item">
+                  <Button type="primary" className="guide-button flag-btn">
+                    Flag
+                  </Button>
+                  <Text className="guide-text">
+                    Marks a question for review
+                  </Text>
+                </div>
+                
+                <div className="guide-item">
+                  <Button type="primary" danger className="guide-button end-btn">
+                    End Test
+                  </Button>
+                  <Text className="guide-text">
+                    Submits your test for grading
+                  </Text>
+                </div>
+              </div>
+
+              <div className="start-button-container">
+                <Button 
+                  type="primary" 
+                  size="large" 
+                  onClick={handleStartTest}
+                  disabled={attempted}
+                  className="start-button"
+                >
+                  {attempted ? "Test Already Attempted" : "Begin Test"}
+                </Button>
+                {attempted && (
+                  <Text type="secondary" className="attempted-notice">
+                    You have already attempted this test
+                  </Text>
+                )}
+              </div>
+            </Card>
           </Col>
         </Row>
-      </div>
-    </>
+      </Card>
+    </div>
   );
 }
 
-const mapStateToProps = (state) => {
-  return {
-    selectedTest: state.selectedTest.selectedTestData,
-     tests: state.tests.attemptedTest,
-  };
-};
+const mapStateToProps = (state) => ({
+  selectedTest: state.selectedTest.selectedTestData,
+  tests: state.tests.attemptedTest,
+});
 
-export default connect(mapStateToProps, null)(TestInstruction);
+export default connect(mapStateToProps)(TestInstruction);

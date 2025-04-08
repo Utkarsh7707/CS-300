@@ -1,135 +1,122 @@
 import React from "react";
-import { Row, Col, Divider, Progress } from "antd";
+import { Row, Col, Card, Typography, Progress, Divider } from "antd";
 import { connect } from "react-redux";
-import "./ShowResult.css";
 import Chart from "react-google-charts";
+import "./ShowResult.css";
+
+const { Title, Text } = Typography;
 
 function ShowResult(props) {
   const { testName, date } = props.selectedTest;
   const testInfo = props.selectedTest[0];
-  let marks,
-    name,
-    rightAnswers,
-    submitMinutes,
-    totalMarks,
-    wrongAnswers,
-    totalAttempt;
-
-  if (testInfo) {
-    marks = testInfo.correct;
-    // name = testInfo.name;
-    rightAnswers = testInfo.correct;
-    submitMinutes = testInfo.submitMinutes;
-    totalMarks = testInfo.totalMarks;
-    wrongAnswers = testInfo.wrong;
-    totalAttempt = rightAnswers - -wrongAnswers;
-  }
+  
+  // Extract test data with fallbacks
+  const {
+    correct: marks = 0,
+    wrong: wrongAnswers = 0,
+    submitMinutes = 'XX',
+    totalMarks = 100
+  } = testInfo || {};
+  
+  const totalAttempt = marks + wrongAnswers;
   const submitDate = new Date(date);
+  const scorePercentage = Math.floor((marks / totalMarks) * 100);
+  const attemptedPercentage = Math.floor((totalAttempt / totalMarks) * 100);
+  const correctPercentage = Math.floor((marks / totalMarks) * 100);
+
   return (
-    <>
-      <div className="container dashboard">
-        <Row gutter={[48, 10]} justify="center">
-          <Col className="gutter-row" xs={24} sm={24} md={14} xl={14}>
-            <div className="result__wrapper">
-              <div className="result__wrapper__header">
-                {/* <div className="result__heading">
-                  <div className="result__test__name">Name: </div>
-                  <div className="result__test__name__field">{name}</div>
-                </div> */}
-                <div className="result__heading">
-                  <div className="result__test__name">Test Name: </div>
-                  <div className="result__test__name__field">{testName}</div>
-                </div>
-                <div className="result__heading">
-                  <div className="result__test__name">Time Taken: </div>
-                  <div className="result__test__name__field">
-                    {submitMinutes ? submitMinutes : "XX"} minutes
-                  </div>
-                </div>
-                <div className="result__heading">
-                  <div className="result__test__name">
-                    Test Submitted Date:{" "}
-                  </div>
-                  <div className="result__test__name__field">
-                    {submitDate.toLocaleDateString("en-US")}
-                  </div>
-                </div>
+    <div className="result-container">
+      <Row justify="center">
+        <Col xs={24} md={18} lg={14}>
+          <Card className="result-card">
+            <Title level={3} className="result-title">Test Results</Title>
+            
+            <div className="result-meta">
+              <div className="meta-item">
+                <Text strong>Test Name:</Text>
+                <Text>{testName || 'N/A'}</Text>
               </div>
-              <Divider />
-              <div className="result__wrapper__body">
-                <div className="percentage">
-                  <div className="percentage__heading">Your Score</div>
-                  <Progress
-                    percent={Math.floor((marks / totalMarks) * 100)}
-                    status="active"
-                  />
-                </div>
-                <div className="marks__info">
-                  <div className="marks__chart">
+              <div className="meta-item">
+                <Text strong>Given Time:</Text>
+                <Text>{submitMinutes} minutes</Text>
+              </div>
+              <div className="meta-item">
+                <Text strong>Submission Date:</Text>
+                <Text>{submitDate.toLocaleDateString("en-US")}</Text>
+              </div>
+            </div>
+            
+            <Divider className="result-divider" />
+            
+            <div className="score-section">
+              <Title level={4} className="section-title">Your Score</Title>
+              <Progress 
+                percent={scorePercentage} 
+                status="active" 
+                strokeColor="#52c41a"
+                format={percent => `${percent}%`}
+              />
+              <Text className="score-text">
+                {marks} out of {totalMarks} points
+              </Text>
+            </div>
+            
+            <div className="chart-section">
+              <Row gutter={[24, 24]}>
+                <Col xs={24} md={12}>
+                  <div className="chart-container">
                     <Chart
                       width={"100%"}
-                      height={"100%"}
+                      height={"300px"}
                       chartType="PieChart"
                       loader={<div>Loading Chart</div>}
                       data={[
-                        ["Task", "Hours per Day"],
-                        ["Correct", marks / 10],
-                        ["Wrong", totalMarks / 10 - marks / 10],
+                        ["Result", "Value"],
+                        ["Correct", marks],
+                        ["Wrong", wrongAnswers],
                       ]}
                       options={{
-                        title: "Marks Distribution",
-                        // Just add this option
+                        title: "Answer Distribution",
                         pieHole: 0.45,
+                        colors: ['#52c41a', '#ff4d4f'],
+                        legend: { position: 'bottom' }
                       }}
-                      rootProps={{ "data-testid": "3" }}
                     />
                   </div>
-                  <div className="marks">
-                    <h2 className="inlarge">Marks</h2>
-                    <div className="marksBox">
-                      <div className="obtained__marks">
-                        {marks} | {totalMarks}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="attempted">
-                  <div className="total__attempted">
-                    <div className="percentage">
-                      <div className="percentage__heading">
-                        Attempted: {totalAttempt}{" "}
-                      </div>
-                      <Progress
-                        percent={Math.floor((totalAttempt / totalMarks) * 100)}
+                </Col>
+                <Col xs={24} md={12}>
+                  <div className="stats-container">
+                    <div className="stat-item">
+                      <Title level={5}>Attempted Questions</Title>
+                      <Progress 
+                        percent={attemptedPercentage} 
                         status="active"
+                        strokeColor="#1890ff"
                       />
+                      <Text>{totalAttempt} of {totalMarks}</Text>
                     </div>
-                  </div>
-                  <div className="correct__attempted">
-                    <div className="percentage">
-                      <div className="percentage__heading">
-                        Correct Answers: {rightAnswers}
-                      </div>
-                      <Progress
-                        percent={Math.floor((rightAnswers / totalMarks) * 100)}
+                    <div className="stat-item">
+                      <Title level={5}>Correct Answers</Title>
+                      <Progress 
+                        percent={correctPercentage} 
                         status="active"
+                        strokeColor="#52c41a"
                       />
+                      <Text>{marks} of {totalMarks}</Text>
                     </div>
                   </div>
-                </div>
-              </div>
+                </Col>
+              </Row>
             </div>
-          </Col>
-        </Row>
-      </div>
-    </>
+          </Card>
+        </Col>
+      </Row>
+    </div>
   );
 }
 
-const mapStateToProps = (state) => {
-  return {
-    selectedTest: state.selectedTest.selectedTestResultData,
-  };
-};
+const mapStateToProps = (state) => ({
+  selectedTest: state.selectedTest.selectedTestResultData,
+});
 
-export default connect(mapStateToProps, null)(ShowResult);
+export default connect(mapStateToProps)(ShowResult);

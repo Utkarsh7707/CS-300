@@ -1,88 +1,103 @@
 import React, { useEffect } from "react";
-import "./index.css";
-import { Link } from "react-router-dom";
-import { HiOutlineClipboardList, HiClipboardCopy } from "react-icons/hi";
+import { HiOutlineClipboardList, HiClipboardCheck } from "react-icons/hi";
 import { fetchClasses } from "../../actions/classesActions";
 import { connect } from "react-redux";
-import { Skeleton } from "antd";
+import { Link } from "react-router-dom";
+import { Skeleton, Card, List, Typography, Badge } from "antd";
+import "./Classes.css";
+
+const { Text } = Typography;
 
 function Classes(props) {
-  let { classesList, isLoading, studentClassName, trimLength, classes } = props;
-  if (classesList)
-    classesList =
-      classesList.length > trimLength
-        ? classesList.slice(-trimLength).reverse()
-        : classesList;
+  let { classesList, isLoading, trimLength } = props;
+  
+  // Process and clean classes data
+  const processedClasses = classesList ? classesList.map(cls => ({
+    ...cls,
+    className: cls.className.toString().replace(/[^0-9]/g, '') // Extract only numbers
+  })) : [];
+
+  // Reverse and trim if needed
+  const displayedClasses = processedClasses.length > trimLength 
+    ? processedClasses.slice(-trimLength).reverse()
+    : processedClasses.slice().reverse();
 
   useEffect(() => {
     props.fetchClasses();
   }, []);
-  console.log(props);
 
   return (
-    <>
-      <div className="left__header red__header">
-        <p className="left__header__text">
-          {<HiOutlineClipboardList />}Recent Registered Classes
-        </p>
+    <div className="classes-container">
+      <div className="classes-header">
+        <HiOutlineClipboardList className="header-icon" />
+        <Text strong className="header-text">Recent Registered Batch</Text>
+        {displayedClasses && (
+          <Badge 
+            count={displayedClasses.length} 
+            style={{ backgroundColor: '#ff4d4f', marginLeft: 8 }} 
+          />
+        )}
       </div>
-      <div className="left__body">
-        {!isLoading && classesList ? (
-          <ul className="left__body__list__ul">
-            {classesList.map((individualClass, index) => (
+
+      <div className="classes-list-container">
+        {!isLoading && displayedClasses ? (
+          <List
+            itemLayout="horizontal"
+            dataSource={displayedClasses}
+            renderItem={(cls, index) => (
               <Link to="/attempt-test" key={index}>
-                <li className="left__body__test">
-                  <div className="test__index">
-                    <p className="index__box red__index">{index + 1}</p>
-                  </div>
-                  <div className="test__name ">
-                    {" "}
-                    Class - {individualClass.className} {individualClass.section}
-                  </div>
-                  <div className="test__icon">
-                    <HiClipboardCopy />
-                  </div>
-                </li>
+                <List.Item className="class-item">
+                  <Card hoverable className="class-card">
+                    <div className="class-content">
+                      <div className="class-index">
+                        <Text strong className="index-number">
+                          {index + 1}
+                        </Text>
+                      </div>
+                      <div className="class-details">
+                        <Text strong ellipsis className="class-name">
+                          Year {cls.className || 'N/A'}
+                        </Text>
+                        <Text type="secondary" className="section-info">
+                          Section {cls.section || 'N/A'}
+                        </Text>
+                      </div>
+                      <div className="class-icon">
+                        <HiClipboardCheck className="icon" />
+                      </div>
+                    </div>
+                  </Card>
+                </List.Item>
               </Link>
-            ))}
-          </ul>
+            )}
+          />
         ) : (
-          <div className="skeleton">
-            {Array(trimLength)
-              .fill()
-              .map((item, i) => (
-                <div className="single-skeleton" key={i}>
-                  <Skeleton.Avatar
-                    className="avatar-skelton"
-                    active={true}
-                    size="default"
-                    shape="square"
-                  />
-                  <Skeleton.Input
-                    className="input-skelton"
-                    active={true}
-                    size="default"
-                  />
-                </div>
-              ))}
+          <div className="skeleton-container">
+            {Array(trimLength).fill().map((_, i) => (
+              <Card key={i} className="skeleton-card">
+                <Skeleton 
+                  active 
+                  paragraph={{ rows: 1 }} 
+                  title={false} 
+                  avatar={{ shape: 'square' }}
+                />
+              </Card>
+            ))}
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 }
 
-const mapStateToProps = (state) => {
-  return {
-    isLoading: state.tests.isLoadingTest,
-    tests: state.tests.test,
-    classesList: state.classesData.classes,
-  };
-};
-const mapDispatchToProps = (dispatch) => {
-  return {
-    fetchClasses: () => dispatch(fetchClasses()),
-  };
-};
+const mapStateToProps = (state) => ({
+  isLoading: state.tests.isLoadingTest,
+  tests: state.tests.test,
+  classesList: state.classesData.classes,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  fetchClasses: () => dispatch(fetchClasses()),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Classes);
