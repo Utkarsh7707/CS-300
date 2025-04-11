@@ -1,36 +1,208 @@
-.student__status__wrapper {
-    box-shadow: 0 0 5px var(--box-shadow);
-    ;
-}
-
-.status__header {
-    background-color: var(--primary);
-    text-align: center;
+.student-card {
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    position: relative;
+    width: 200px;
+    transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+    height: 100%;
+    border: 1px solid #ddd;
+  }
+  
+  .student-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .performance-strip {
+    height: 2px;
+    width: 100%;
+  }
+  
+  .performance-excellent {
+    background: #43a047;
+  }
+  
+  .performance-good {
+    background: #1e88e5;
+  }
+  
+  .performance-average {
+    background: #fb8c00;
+  }
+  
+  .performance-needs-improvement {
+    background: #e53935;
+  }
+  
+  .card-content {
+    padding: 12px;
+  }
+  
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+  
+  .student-name {
     margin: 0;
-    color: var(--secondary);
+    font-size: 14px;
     font-weight: 500;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    padding: 10px;
-}
-
-.student__status__body {
-    border: 1px solid var(--border);
-    padding: 10px;
-}
-
-.status__testname {
-    font-weight: 350 !important;
-    font-size: 1.3em;
-}
-
-.student__status__body div {
-    padding: 5px;
+    color: #37474f;
+  }
+  
+  .year-badge {
+    background: #eee;
+    color: #546e7a;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-size: 9px;
+    font-weight: 400;
+  }
+  
+  .test-title {
+    margin: 0 0 8px 0;
+    color: #546e7a;
+    font-size: 11px;
+  }
+  
+  .percentage-container {
+    display: flex;
+    justify-content: center;
+    margin: 12px 0;
+  }
+  
+  .percentage-circle {
+    position: relative;
+    width: 60px;
+    height: 60px;
+  }
+  
+  .percentage-circle svg {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .circle-bg {
+    fill: none;
+    stroke: #e0e0e0;
+    stroke-width: 1;
+  }
+  
+  .circle-progress {
+    fill: none;
+    stroke-width: 1;
+    stroke-linecap: round;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+    transition: stroke-dasharray 0.2s ease-in-out;
+  }
+  
+  .progress-high {
+    stroke: #43a047;
+  }
+  
+  .progress-medium {
+    stroke: #1e88e5;
+  }
+  
+  .progress-low {
+    stroke: #e53935;
+  }
+  
+  .percentage-value {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
     font-weight: 500;
-}
-.gutter-col-adder{
-    margin: 15px 0px;
-}
-.student__status{
-    padding: 2vw 5vw;
-}
+    color: #37474f;
+  }
+  
+  .performance-label-container {
+    text-align: center;
+    margin-bottom: 12px;
+  }
+  
+  .performance-label {
+    padding: 3px 5px;
+    border-radius: 2px;
+    font-size: 10px;
+    font-weight: 400;
+  }
+  
+  .label-high {
+    background: #e8f5e9;
+    color: #43a047;
+  }
+  
+  .label-medium {
+    background: #e3f2fd;
+    color: #1e88e5;
+  }
+  
+  .label-low {
+    background: #ffebee;
+    color: #e53935;
+  }
+  
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4px;
+  }
+  
+  .stat-item {
+    background: #f5f5f5;
+    border-radius: 2px;
+    padding: 6px;
+    text-align: center;
+  }
+  
+  .stat-label {
+    margin: 0 0 1px 0;
+    color: #78909c;
+    font-size: 9px;
+  }
+  
+  .stat-value {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 500;
+    color: #37474f;
+  }
+  
+  .correct-stat {
+    border-left: 1px solid #43a047;
+  }
+  
+  .wrong-stat {
+    border-left: 1px solid #e53935;
+  }
+  
+  .correct-value {
+    color: #43a047;
+  }
+  
+  .wrong-value {
+    color: #e53935;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .student-card {
+      margin-bottom: 8px;
+    }
+  
+    .stats-grid {
+      grid-template-columns: 1fr;
+    }
+  }

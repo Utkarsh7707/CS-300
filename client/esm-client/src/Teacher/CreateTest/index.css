@@ -1,37 +1,83 @@
-.create__test__form {
-    width: 100% !important;
-}
-
-.rules__wrapper {
-    width: 100%;
-}
-
-.add__new {
-    color: var(--primary);
-    font-weight: 500;
-}
-
-.renderData__wrapper {
-    width: 100%;
-}
-
-.options__wrapper {
+.create-test-container {
+    padding: 24px;
+    background-color: #f5f7fa;
+    min-height: 100vh;
+  }
+  
+  .create-test-card {
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border: none;
+    padding: 24px;
+  }
+  
+  .create-test-title {
+    text-align: center;
+    margin-bottom: 24px;
+    color: #2c3e50;
+  }
+  
+  .title-icon {
+    margin-right: 12px;
+  }
+  
+  .create-test-form {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .form-row {
     display: flex;
-    align-items: center;
-    margin-bottom: 15px;
-}
-
-.render__item {
-    display: flex !important;
-    margin-bottom: 25px;
-    align-items: center;
-}
-
-.question__options {
-    margin-bottom: 40px;
-}
-
-.option {
-    margin-top: 5px;
-    margin-bottom: 5px;
-}
+    gap: 24px;
+    margin-bottom: 16px;
+  }
+  
+  .form-item {
+    flex: 1;
+  }
+  
+  .section-divider {
+    margin: 32px 0 24px;
+    color: #555;
+    font-size: 16px;
+  }
+  
+  .submit-button {
+    width: 100%;
+    height: 48px;
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 16px;
+  }
+  
+  .minimum-questions {
+    display: block;
+    text-align: center;
+    margin-top: 8px;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .form-row {
+      flex-direction: column;
+      gap: 16px;
+    }
+    
+    .create-test-card {
+      padding: 16px;
+    }
+  }
+  
+  /* Dark mode support */
+  [data-theme="dark"] .create-test-container {
+    background-color: #141414;
+  }
+  
+  [data-theme="dark"] .create-test-card {
+    background-color: #1f1f1f;
+    border-color: #333;
+  }
+  
+  [data-theme="dark"] .create-test-title {
+    color: #f0f0f0;
+  }
